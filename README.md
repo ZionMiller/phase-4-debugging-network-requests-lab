@@ -63,11 +63,30 @@ developing your own process.
 - Add a new toy when the toy form is submitted
 
   - How I debugged:
+  * I fixed this last
+  1) I first navigated to the form in browser, input valid data and made a request
+  2) From here I recieved a 500 (Internal Server Error)
+  3) Rembering that the instructions informed us that our client won't need to be touched, I think this error will be in our controller since the route appears to exist
+  4) I navigated to app>controllers>toys_controller.rb and looked for the create action which is a POST
+  5) Here I discovered our toy variable was initialized with a plural Toys.create(toy_params) when it should be Toy.create(toy_params)
+  6) I removed the s and tested in our browser
+  7) Initially I recieved a 404 due to an invalid image, I copied a prexisiting image below and submitted with a funny name to make sure I could spot it
+  8) Thankfully now everything is working, I tested all actions on a couple cards and moved on!
 
 - Update the number of likes for a toy
 
   - How I debugged:
+  1) Checked browser, fired off requests and went to console to observe errors
+  2) Recieved "Uncaught (in promise) SyntaxError: Unexpected end of JSON input"
+  3) According to the instructions, we don't need to edit our React which pointed me instead to our controller
+  4) I assumed this because this errors means we aren't rendering json somewhere in our response. Since client doesn't need to be touched, this must mean our controller is missing something
+  5) Likes are a PATCH so I looked for the update action and sure enough, the action was missing a render
 
 - Donate a toy to Goodwill (and delete it from our database)
 
   - How I debugged:
+  1) *I noticed our destroy action was also missing a render json, but then remembered destroy doesn't need this so I:
+  2) I navigated back to our browser to observe the error 
+  3) This returned a "404 not found" which is a hint that this route doesn't exist yet
+  4) Sure enough config>routes.rb reveales we are only permitting index, create, update, so I added :destroy action
+  5) tested on two cards to confirm and observed response in network in the console
